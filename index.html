@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypingMaster Pro - Das ultimative Tastatur-Training</title>
+    <title>Learning with Fun - Das ultimative Tastatur-Training</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -19,7 +19,7 @@
     <header class="w-full max-w-4xl flex justify-between items-center py-4 border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="text-3xl">⌨️</span>
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">TypingMaster Pro</h1>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">Learning with Fun</h1>
         </div>
         <div id="streak-counter" class="bg-slate-800 px-4 py-1.5 rounded-full text-sm font-medium border border-slate-700">
             🔥 Streak: <span id="streak-num" class="text-orange-400 font-bold">0</span>
@@ -31,42 +31,42 @@
         
         <!-- Mode Selection Tabs -->
         <div id="mode-tabs" class="flex flex-wrap justify-center gap-2 mb-6 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
-            <button onclick="switchMode('basics')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow">📖 Grundlagen</button>
-            <button onclick="switchMode('practice')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🎯 Übung</button>
-            <button onclick="switchMode('words')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">💬 Wörter</button>
-            <button onclick="switchMode('test')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">⏱️ 1-Min-Test</button>
-            <button onclick="switchMode('bot')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🤖 Bot-Rennen</button>
-            <button onclick="switchMode('duo')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">👥 Duo-Modus</button>
+            <button onclick="switchMode('basics')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow">📖 Basics</button>
+            <button onclick="switchMode('practice')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🎯 Practice</button>
+            <button onclick="switchMode('words')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">💬 Words</button>
+            <button onclick="switchMode('test')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">⏱️ 1-Min Test</button>
+            <button onclick="switchMode('bot')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🤖 Bot Race</button>
+            <button onclick="switchMode('duo')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">👥 Duo Mode</button>
         </div>
 
         <!-- BASICS SECTION -->
         <div id="section-basics" class="w-full bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl space-y-6">
-            <h2 class="text-xl font-bold text-blue-400">Das Zehnfingersystem – Grundlagen</h2>
-            <p class="text-slate-300 text-sm">Das Zehnfingersystem basiert auf der sogenannten **Grundstellung (Home Row)**. Deine Zeigefinger ruhen auf den Markierungstasten **F** und **J** (die kleine Erhebung hilft dir, sie blind zu finden).</p>
+            <h2 class="text-xl font-bold text-blue-400">Touch Typing System – Basics</h2>
+            <p class="text-slate-300 text-sm">The touch typing system is based on the **Home Row Position**. Your index fingers rest on the keys **F** and **J** (the small bump helps you find them blindly).</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <h3 class="font-semibold text-indigo-400 mb-2">Linke Hand</h3>
+                    <h3 class="font-semibold text-indigo-400 mb-2">Left Hand</h3>
                     <ul class="text-sm space-y-1 text-slate-300">
-                        <li>• Kleiner Finger: A, Q, Y</li>
-                        <li>• Ringfinger: S, W</li>
-                        <li>• Mittelfinger: D, E</li>
-                        <li>• Zeigefinger: F, R, G, T, V, C</li>
-                        <li>• Daumen: Leertaste</li>
+                        <li>• Pinky: A, Q, Y</li>
+                        <li>• Ring: S, W</li>
+                        <li>• Middle: D, E</li>
+                        <li>• Index: F, R, G, T, V, C</li>
+                        <li>• Thumb: Spacebar</li>
                     </ul>
                 </div>
                 <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <h3 class="font-semibold text-indigo-400 mb-2">Rechte Hand</h3>
+                    <h3 class="font-semibold text-indigo-400 mb-2">Right Hand</h3>
                     <ul class="text-sm space-y-1 text-slate-300">
-                        <li>• Zeigefinger: J, U, H, Z, B, N</li>
-                        <li>• Mittelfinger: K, I</li>
-                        <li>• Ringfinger: L, O</li>
-                        <li>• Kleiner Finger: P, Ö, Ä, Ü</li>
-                        <li>• Daumen: Leertaste</li>
+                        <li>• Index: J, U, H, Z, B, N</li>
+                        <li>• Middle: K, I</li>
+                        <li>• Ring: L, O</li>
+                        <li>• Pinky: P, Ö, Ä, Ü</li>
+                        <li>• Thumb: Spacebar</li>
                     </ul>
                 </div>
             </div>
-            <button onclick="switchMode('practice')" class="w-full bg-blue-600 hover:bg-blue-500 font-semibold py-3 rounded-xl transition shadow">Jetzt mit Übungen starten</button>
+            <button onclick="switchMode('practice')" class="w-full bg-blue-600 hover:bg-blue-500 font-semibold py-3 rounded-xl transition shadow">Start Training Now</button>
         </div>
 
         <!-- TYPING ENGINE SECTION (Used for Practice, Words, Test) -->
@@ -79,15 +79,15 @@
                     <div id="stat-wpm" class="text-xl font-bold text-blue-400">0</div>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
-                    <div class="text-xs text-slate-400">Genauigkeit</div>
+                    <div class="text-xs text-slate-400">Accuracy</div>
                     <div id="stat-acc" class="text-xl font-bold text-emerald-400">100%</div>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
-                    <div class="text-xs text-slate-400">Fehler</div>
+                    <div class="text-xs text-slate-400">Errors</div>
                     <div id="stat-err" class="text-xl font-bold text-rose-400">0</div>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
-                    <div class="text-xs text-slate-400">Zeit</div>
+                    <div class="text-xs text-slate-400">Time</div>
                     <div id="stat-time" class="text-xl font-bold text-amber-400">0s</div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                 <div id="text-display" class="font-mono text-2xl tracking-wide leading-relaxed select-none text-center"></div>
                 <input type="text" id="hidden-input" class="absolute opacity-0 pointer-events-none" oninput="handleInput(event)" onkeydown="handleKeyDown(event)">
                 <div id="focus-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm rounded-2xl flex items-center justify-center text-slate-300 font-medium">
-                    Klicken zum Starten
+                    Click to Start
                 </div>
             </div>
 
@@ -149,33 +149,33 @@
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="m">m</kbd>
                 </div>
                 <div class="w-full flex justify-center">
-                    <kbd class="key px-32 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key=" ">Leertaste</kbd>
+                    <kbd class="key px-32 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key=" ">Spacebar</kbd>
                 </div>
             </div>
 
-            <button onclick="resetSession()" class="text-xs text-slate-400 hover:text-slate-200 underline">Neustarten (Esc)</button>
+            <button onclick="resetSession()" class="text-xs text-slate-400 hover:text-slate-200 underline">Reset (Esc)</button>
         </div>
 
         <!-- BOT RACE SECTION -->
         <div id="section-bot" class="w-full hidden bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl space-y-6">
-            <h2 class="text-xl font-bold text-blue-400">🤖 Bot-Rennen (Tipp-Duell)</h2>
+            <h2 class="text-xl font-bold text-blue-400">🤖 Bot Race (Typing Duel)</h2>
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div>
-                    <label class="text-sm text-slate-300 block mb-1">Bot-Schwierigkeit:</label>
+                    <label class="text-sm text-slate-300 block mb-1">Bot Difficulty:</label>
                     <select id="bot-level" class="bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
-                        <option value="easy">Anfänger-Bot (25 WPM)</option>
-                        <option value="medium" selected>Fortgeschrittenen-Bot (45 WPM)</option>
-                        <option value="hard">Profi-Bot (70 WPM)</option>
+                        <option value="easy">Beginner Bot (25 WPM)</option>
+                        <option value="medium" selected>Advanced Bot (45 WPM)</option>
+                        <option value="hard">Pro Bot (70 WPM)</option>
                     </select>
                 </div>
-                <button onclick="startBotRace()" class="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl font-semibold shadow transition">Rennen starten</button>
+                <button onclick="startBotRace()" class="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl font-semibold shadow transition">Start Race</button>
             </div>
             
             <div id="race-track" class="hidden space-y-4 pt-4 border-t border-slate-700">
                 <div class="relative bg-slate-900 rounded-xl p-4 border border-slate-700 h-24 flex flex-col justify-around">
                     <!-- User Car -->
                     <div id="user-car" class="flex items-center space-x-2 transition-all duration-150" style="margin-left: 0%;">
-                        <span class="text-2xl">🚗</span> <span class="text-xs bg-blue-600 px-2 py-0.5 rounded text-white">Du</span>
+                        <span class="text-2xl">🚗</span> <span class="text-xs bg-blue-600 px-2 py-0.5 rounded text-white">You</span>
                     </div>
                     <!-- Bot Car -->
                     <div id="bot-car" class="flex items-center space-x-2 transition-all duration-300" style="margin-left: 0%;">
@@ -190,24 +190,24 @@
 
         <!-- DUO MODE SECTION -->
         <div id="section-duo" class="w-full hidden bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl space-y-6">
-            <h2 class="text-xl font-bold text-blue-400">👥 Duo-Modus (Abwechselnd)</h2>
+            <h2 class="text-xl font-bold text-blue-400">👥 Duo Mode (Alternating)</h2>
             <div id="duo-setup" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="text-sm text-slate-300 block mb-1">Name Spieler 1:</label>
-                        <input type="text" id="p1-name" value="Spieler 1" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                        <label class="text-sm text-slate-300 block mb-1">Player 1 Name:</label>
+                        <input type="text" id="p1-name" value="Player 1" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="text-sm text-slate-300 block mb-1">Name Spieler 2:</label>
-                        <input type="text" id="p2-name" value="Spieler 2" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                        <label class="text-sm text-slate-300 block mb-1">Player 2 Name:</label>
+                        <input type="text" id="p2-name" value="Player 2" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
-                <button onclick="startDuoGame()" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-semibold shadow transition">Duo-Duell starten</button>
+                <button onclick="startDuoGame()" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-semibold shadow transition">Start Duo Duel</button>
             </div>
             
             <div id="duo-game-area" class="hidden space-y-4">
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-center">
-                    <span id="duo-turn-indicator" class="text-lg font-bold text-indigo-400">Spieler 1 ist am Zug</span>
+                    <span id="duo-turn-indicator" class="text-lg font-bold text-indigo-400">Player 1's Turn</span>
                 </div>
                 <div id="duo-typing-display" class="bg-slate-900 p-6 rounded-xl border border-slate-700 font-mono text-xl tracking-wide text-center"></div>
                 <input type="text" id="duo-hidden-input" class="opacity-0 absolute" oninput="handleDuoInput(event)">
@@ -218,7 +218,7 @@
 
     <!-- Footer -->
     <footer class="w-full max-w-4xl text-center py-4 border-t border-slate-800 text-xs text-slate-500">
-        TypingMaster Pro • Entwickelt mit ❤️ für schnelles Tippen
+        Learning with Fun • Developed with ❤️ for fast typing | <a href="todo.html" class="text-blue-400 hover:text-blue-300">📝 To-Do List</a>
     </footer>
 
     <!-- Audio Synthesizer & App Logic -->
@@ -252,8 +252,8 @@
         let currentMode = 'basics';
         let sampleTexts = {
             practice: "asdf jklö asdf jklö ffff jjjj dddd kkkk ssss llll aaaa öööö",
-            words: "haus baum auto tisch hund katze sonne blume wasser schule",
-            test: "Das Zehnfingersystem ist eine effiziente Methode um die Computertastatur schnell und fehlerfrei zu bedienen ohne ständig auf die Tasten schauen zu müssen."
+            words: "house tree car table dog cat sun flower water school",
+            test: "The touch typing system is an efficient method to operate the computer keyboard quickly and without errors without constantly looking at the keys."
         };
         
         let targetText = "";
@@ -387,7 +387,7 @@
         let botInterval = null;
         let botProgress = 0;
         let userBotProgress = 0;
-        let botTargetText = "Das schnelle Tippen gegen den Bot erfordert eine hohe Konzentration und flinke Finger.";
+        let botTargetText = "Fast typing against the bot requires high concentration and nimble fingers for success.";
 
         function startBotRace() {
             document.getElementById('race-track').classList.remove('hidden');
@@ -435,7 +435,7 @@
                 if(userBotProgress >= botTargetText.length) {
                     clearInterval(botInterval);
                     confetti();
-                    alert('Rennen beendet! Du hast gegen den Bot gewonnen!');
+                    alert('Race finished! You won against the bot!');
                 }
             } else {
                 playSound('error');
@@ -443,14 +443,14 @@
         }
 
         // Duo Mode Logic
-        let duoP1Name = "Spieler 1", duoP2Name = "Spieler 2";
+        let duoP1Name = "Player 1", duoP2Name = "Player 2";
         let duoCurrentPlayer = 1;
-        let duoText = "Gemeinsam macht das Tippen gleich viel mehr Spass und spornt zu neuen Bestleistungen an.";
+        let duoText = "Together typing is much more fun and motivates you to achieve new personal bests.";
         let duoP1Score = 0, duoP2Score = 0;
 
         function startDuoGame() {
-            duoP1Name = document.getElementById('p1-name').value || "Spieler 1";
-            duoP2Name = document.getElementById('p2-name').value || "Spieler 2";
+            duoP1Name = document.getElementById('p1-name').value || "Player 1";
+            duoP2Name = document.getElementById('p2-name').value || "Player 2";
             document.getElementById('duo-setup').classList.add('hidden');
             document.getElementById('duo-game-area').classList.remove('hidden');
             duoCurrentPlayer = 1;
@@ -460,7 +460,7 @@
         }
 
         function setupDuoRound() {
-            document.getElementById('duo-turn-indicator').innerText = `${duoCurrentPlayer === 1 ? duoP1Name : duoP2Name} ist am Zug!`;
+            document.getElementById('duo-turn-indicator').innerText = `${duoCurrentPlayer === 1 ? duoP1Name : duoP2Name}'s Turn!`;
             duoIndex = 0;
             renderDuoText();
             document.getElementById('duo-hidden-input').focus();
@@ -494,14 +494,14 @@
                     duoStartTime = null;
                     if(duoCurrentPlayer === 1) {
                         duoP1Score = timeSec;
-                        alert(`${duoP1Name} fertig in ${timeSec.toFixed(1)} Sekunden! Jetzt ist ${duoP2Name} dran.`);
+                        alert(`${duoP1Name} finished in ${timeSec.toFixed(1)} seconds! Now it's ${duoP2Name}'s turn.`);
                         duoCurrentPlayer = 2;
                         setupDuoRound();
                     } else {
                         duoP2Score = timeSec;
                         let winner = duoP1Score < duoP2Score ? duoP1Name : duoP2Name;
                         confetti();
-                        alert(`Duell beendet!\n${duoP1Name}: ${duoP1Score.toFixed(1)}s\n${duoP2Name}: ${duoP2Score.toFixed(1)}s\n\n🏆 Gewinner: ${winner}!`);
+                        alert(`Duel finished!\n${duoP1Name}: ${duoP1Score.toFixed(1)}s\n${duoP2Name}: ${duoP2Score.toFixed(1)}s\n\n🏆 Winner: ${winner}!`);
                         document.getElementById('duo-setup').classList.remove('hidden');
                         document.getElementById('duo-game-area').classList.add('hidden');
                     }
