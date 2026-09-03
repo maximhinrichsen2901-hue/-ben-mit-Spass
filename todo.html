@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List - Learning with Fun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .task-done { text-decoration: line-through; color: rgb(100, 116, 139); }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4">
+
+    <!-- Header -->
+    <header class="w-full max-w-2xl flex justify-between items-center py-4 border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+            <span class="text-3xl">📝</span>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">My To-Do List</h1>
+        </div>
+        <a href="index.html" class="text-sm bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition">← Back</a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-2xl flex-1 flex flex-col my-6 space-y-6">
+
+        <!-- Input Section -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl">
+            <div class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="task-input" 
+                    placeholder="Add a new task..." 
+                    class="flex-1 bg-slate-900 border border-slate-700 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition"
+                    onkeypress="if(event.key==='Enter') addTask()"
+                >
+                <button 
+                    onclick="addTask()" 
+                    class="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-xl font-semibold shadow transition"
+                >
+                    ➕ Add
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex gap-2 flex-wrap justify-center">
+            <button onclick="filterTasks('all')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-emerald-600 text-white shadow">All</button>
+            <button onclick="filterTasks('active')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">Active</button>
+            <button onclick="filterTasks('completed')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">Completed</button>
+        </div>
+
+        <!-- Task Statistics -->
+        <div class="grid grid-cols-3 gap-4">
+            <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
+                <div class="text-xs text-slate-400">Total</div>
+                <div id="stat-total" class="text-xl font-bold text-emerald-400">0</div>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
+                <div class="text-xs text-slate-400">Active</div>
+                <div id="stat-active" class="text-xl font-bold text-yellow-400">0</div>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center">
+                <div class="text-xs text-slate-400">Done</div>
+                <div id="stat-completed" class="text-xl font-bold text-cyan-400">0</div>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div id="task-list" class="space-y-2 bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl min-h-[200px]">
+            <div class="text-center text-slate-400 py-8">📌 No tasks yet</div>
+        </div>
+
+        <!-- Clear Completed Button -->
+        <button 
+            onclick="clearCompleted()" 
+            class="w-full text-sm text-slate-400 hover:text-rose-400 underline transition"
+        >
+            🗑️ Delete Completed Tasks
+        </button>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-2xl text-center py-4 border-t border-slate-800 text-xs text-slate-500">
+        Learning with Fun • To-Do List with Local Storage | <a href="index.html" class="text-emerald-400 hover:text-emerald-300">⌨️ Back to Typing App</a>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        let tasks = [];
+        let currentFilter = 'all';
+
+        // Load tasks from Local Storage
+        function loadTasks() {
+            const stored = localStorage.getItem('tasks');
+            tasks = stored ? JSON.parse(stored) : [];
+            renderTasks();
+            updateStats();
+        }
+
+        // Save tasks to Local Storage
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Add new task
+        function addTask() {
+            const input = document.getElementById('task-input');
+            const text = input.value.trim();
+            
+            if (!text) {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const task = {
+                id: Date.now(),
+                text: text,
+                completed: false,
+                createdAt: new Date().toLocaleDateString('en-US')
+            };
+
+            tasks.unshift(task);
+            saveTasks();
+            input.value = '';
+            renderTasks();
+            updateStats();
+        }
+
+        // Toggle task completion
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveTasks();
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        // Delete task
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            saveTasks();
+            renderTasks();
+            updateStats();
+        }
+
+        // Clear completed tasks
+        function clearCompleted() {
+            if (confirm('Delete all completed tasks?')) {
+                tasks = tasks.filter(t => !t.completed);
+                saveTasks();
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        // Filter tasks
+        function filterTasks(filter) {
+            currentFilter = filter;
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700";
+            });
+            event.target.className = "filter-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-emerald-600 text-white shadow";
+            
+            renderTasks();
+        }
+
+        // Render task list
+        function renderTasks() {
+            const taskList = document.getElementById('task-list');
+            
+            let filteredTasks = tasks;
+            if (currentFilter === 'active') {
+                filteredTasks = tasks.filter(t => !t.completed);
+            } else if (currentFilter === 'completed') {
+                filteredTasks = tasks.filter(t => t.completed);
+            }
+
+            if (filteredTasks.length === 0) {
+                taskList.innerHTML = '<div class="text-center text-slate-400 py-8">📌 No tasks yet</div>';
+                return;
+            }
+
+            taskList.innerHTML = filteredTasks.map(task => `
+                <div class="fade-in flex items-center gap-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700 hover:border-slate-600 transition group">
+                    <input 
+                        type="checkbox" 
+                        ${task.completed ? 'checked' : ''} 
+                        onchange="toggleTask(${task.id})"
+                        class="w-5 h-5 rounded accent-emerald-500 cursor-pointer"
+                    >
+                    <div class="flex-1">
+                        <div class="${task.completed ? 'task-done' : ''} text-sm">${task.text}</div>
+                        <div class="text-xs text-slate-500 mt-1">${task.createdAt}</div>
+                    </div>
+                    <button 
+                        onclick="deleteTask(${task.id})"
+                        class="text-slate-400 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition"
+                    >
+                        🗑️
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const active = total - completed;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-active').innerText = active;
+            document.getElementById('stat-completed').innerText = completed;
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', loadTasks);
+    </script>
+</body>
+</html>
