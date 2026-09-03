@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning with Fun - Das ultimative Tastatur-Training</title>
+    <title>Learning with Fun - Touch Typing Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -11,6 +11,8 @@
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         .key-active { transform: scale(0.95); background-color: #3b82f6 !important; color: white !important; }
+        .correct { color: #10b981; }
+        .incorrect { color: #ef4444; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4">
@@ -31,12 +33,12 @@
         
         <!-- Mode Selection Tabs -->
         <div id="mode-tabs" class="flex flex-wrap justify-center gap-2 mb-6 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
-            <button onclick="switchMode('basics')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow">📖 Basics</button>
-            <button onclick="switchMode('practice')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🎯 Practice</button>
-            <button onclick="switchMode('words')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">💬 Words</button>
-            <button onclick="switchMode('test')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">⏱️ 1-Min Test</button>
-            <button onclick="switchMode('bot')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">🤖 Bot Race</button>
-            <button onclick="switchMode('duo')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700">👥 Duo Mode</button>
+            <button onclick="switchMode('basics')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow cursor-pointer">📖 Basics</button>
+            <button onclick="switchMode('practice')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700 cursor-pointer">🎯 Practice</button>
+            <button onclick="switchMode('words')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700 cursor-pointer">💬 Words</button>
+            <button onclick="switchMode('test')" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700 cursor-pointer">⏱️ 1-Min Test</button>
+            <button onclick="startBotRace()" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700 cursor-pointer">🤖 Bot Race</button>
+            <button onclick="startDuoGame()" class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700 cursor-pointer">👥 Duo Mode</button>
         </div>
 
         <!-- BASICS SECTION -->
@@ -66,10 +68,10 @@
                     </ul>
                 </div>
             </div>
-            <button onclick="switchMode('practice')" class="w-full bg-blue-600 hover:bg-blue-500 font-semibold py-3 rounded-xl transition shadow">Start Training Now</button>
+            <button onclick="switchMode('practice')" class="w-full bg-blue-600 hover:bg-blue-500 font-semibold py-3 rounded-xl transition shadow cursor-pointer">Start Training Now</button>
         </div>
 
-        <!-- TYPING ENGINE SECTION (Used for Practice, Words, Test) -->
+        <!-- TYPING ENGINE SECTION -->
         <div id="section-typing" class="w-full hidden flex flex-col items-center space-y-6">
             
             <!-- Stats Dashboard -->
@@ -95,16 +97,15 @@
             <!-- Typing Box -->
             <div id="typing-box" onclick="focusInput()" class="w-full bg-slate-800 border-2 border-slate-700 focus-within:border-blue-500 rounded-2xl p-6 shadow-2xl relative cursor-text transition-all min-h-[140px] flex items-center justify-center">
                 <div id="text-display" class="font-mono text-2xl tracking-wide leading-relaxed select-none text-center"></div>
-                <input type="text" id="hidden-input" class="absolute opacity-0 pointer-events-none" oninput="handleInput(event)" onkeydown="handleKeyDown(event)">
-                <div id="focus-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm rounded-2xl flex items-center justify-center text-slate-300 font-medium">
+                <input type="text" id="hidden-input" class="absolute opacity-0 pointer-events-none" autocomplete="off">
+                <div id="focus-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm rounded-2xl flex items-center justify-center text-slate-300 font-medium cursor-pointer">
                     Click to Start
                 </div>
             </div>
 
             <!-- Virtual Keyboard -->
             <div class="w-full bg-slate-800/90 border border-slate-700 p-4 rounded-2xl flex flex-col items-center gap-1.5 shadow-xl max-w-2xl">
-                <div class="flex gap-1">
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="^">^</kbd>
+                <div class="flex gap-1 flex-wrap justify-center">
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="1">1</kbd>
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="2">2</kbd>
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="3">3</kbd>
@@ -116,101 +117,46 @@
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="9">9</kbd>
                     <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="0">0</kbd>
                 </div>
-                <div class="flex gap-1">
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="q">q</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="w">w</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="e">e</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="r">r</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="t">t</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="z">z</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="u">u</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="i">i</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="o">o</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="p">p</kbd>
+                <div class="flex gap-1 flex-wrap justify-center">
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="q">Q</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="w">W</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="e">E</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="r">R</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="t">T</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="z">Z</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="u">U</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="i">I</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="o">O</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="p">P</kbd>
                 </div>
-                <div class="flex gap-1">
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="a">a</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="s">s</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="d">d</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="f">f</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="g">g</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="h">h</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="j">j</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="k">k</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="l">l</kbd>
+                <div class="flex gap-1 flex-wrap justify-center">
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="a">A</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="s">S</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="d">D</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="f">F</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="g">G</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="h">H</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="j">J</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="k">K</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="l">L</kbd>
                 </div>
-                <div class="flex gap-1">
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="y">y</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="x">x</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="c">c</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="v">v</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="b">b</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="n">n</kbd>
-                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="m">m</kbd>
+                <div class="flex gap-1 flex-wrap justify-center">
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="y">Y</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="x">X</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="c">C</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="v">V</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="b">B</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="n">N</kbd>
+                    <kbd class="key px-3 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key="m">M</kbd>
                 </div>
                 <div class="w-full flex justify-center">
-                    <kbd class="key px-32 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key=" ">Spacebar</kbd>
+                    <kbd class="key px-32 py-2 bg-slate-700 rounded text-xs font-mono text-slate-300" data-key=" ">SPACE</kbd>
                 </div>
             </div>
 
-            <button onclick="resetSession()" class="text-xs text-slate-400 hover:text-slate-200 underline">Reset (Esc)</button>
-        </div>
-
-        <!-- BOT RACE SECTION -->
-        <div id="section-bot" class="w-full hidden bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl space-y-6">
-            <h2 class="text-xl font-bold text-blue-400">🤖 Bot Race (Typing Duel)</h2>
-            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div>
-                    <label class="text-sm text-slate-300 block mb-1">Bot Difficulty:</label>
-                    <select id="bot-level" class="bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
-                        <option value="easy">Beginner Bot (25 WPM)</option>
-                        <option value="medium" selected>Advanced Bot (45 WPM)</option>
-                        <option value="hard">Pro Bot (70 WPM)</option>
-                    </select>
-                </div>
-                <button onclick="startBotRace()" class="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl font-semibold shadow transition">Start Race</button>
-            </div>
-            
-            <div id="race-track" class="hidden space-y-4 pt-4 border-t border-slate-700">
-                <div class="relative bg-slate-900 rounded-xl p-4 border border-slate-700 h-24 flex flex-col justify-around">
-                    <!-- User Car -->
-                    <div id="user-car" class="flex items-center space-x-2 transition-all duration-150" style="margin-left: 0%;">
-                        <span class="text-2xl">🚗</span> <span class="text-xs bg-blue-600 px-2 py-0.5 rounded text-white">You</span>
-                    </div>
-                    <!-- Bot Car -->
-                    <div id="bot-car" class="flex items-center space-x-2 transition-all duration-300" style="margin-left: 0%;">
-                        <span class="text-2xl">🤖</span> <span class="text-xs bg-purple-600 px-2 py-0.5 rounded text-white" id="bot-label">Bot</span>
-                    </div>
-                </div>
-                
-                <div id="race-typing-box" class="bg-slate-900 p-4 rounded-xl border border-slate-700 font-mono text-xl tracking-wide select-none"></div>
-                <input type="text" id="bot-hidden-input" class="opacity-0 absolute" oninput="handleBotInput(event)">
-            </div>
-        </div>
-
-        <!-- DUO MODE SECTION -->
-        <div id="section-duo" class="w-full hidden bg-slate-800/90 rounded-2xl p-6 border border-slate-700 shadow-xl space-y-6">
-            <h2 class="text-xl font-bold text-blue-400">👥 Duo Mode (Alternating)</h2>
-            <div id="duo-setup" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-sm text-slate-300 block mb-1">Player 1 Name:</label>
-                        <input type="text" id="p1-name" value="Player 1" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="text-sm text-slate-300 block mb-1">Player 2 Name:</label>
-                        <input type="text" id="p2-name" value="Player 2" class="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                </div>
-                <button onclick="startDuoGame()" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-semibold shadow transition">Start Duo Duel</button>
-            </div>
-            
-            <div id="duo-game-area" class="hidden space-y-4">
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-center">
-                    <span id="duo-turn-indicator" class="text-lg font-bold text-indigo-400">Player 1's Turn</span>
-                </div>
-                <div id="duo-typing-display" class="bg-slate-900 p-6 rounded-xl border border-slate-700 font-mono text-xl tracking-wide text-center"></div>
-                <input type="text" id="duo-hidden-input" class="opacity-0 absolute" oninput="handleDuoInput(event)">
+            <div class="flex gap-4">
+                <button onclick="resetSession()" class="text-sm text-slate-400 hover:text-slate-200 underline cursor-pointer">↻ Reset (Esc)</button>
+                <button onclick="switchMode('basics')" class="text-sm text-slate-400 hover:text-slate-200 underline cursor-pointer">← Back</button>
             </div>
         </div>
 
@@ -218,42 +164,16 @@
 
     <!-- Footer -->
     <footer class="w-full max-w-4xl text-center py-4 border-t border-slate-800 text-xs text-slate-500">
-        Learning with Fun • Developed with ❤️ for fast typing | <a href="todo.html" class="text-blue-400 hover:text-blue-300">📝 To-Do List</a>
+        Learning with Fun • Developed with ❤️ | <a href="todo.html" class="text-blue-400 hover:text-blue-300">📝 To-Do List</a>
     </footer>
 
-    <!-- Audio Synthesizer & App Logic -->
+    <!-- Script -->
     <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            if(type === 'error') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.15);
-            } else {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.05);
-            }
-        }
-
         let currentMode = 'basics';
         let sampleTexts = {
-            practice: "asdf jklö asdf jklö ffff jjjj dddd kkkk ssss llll aaaa öööö",
+            practice: "asdf asdf jkl; jkl; hello world the quick brown fox",
             words: "house tree car table dog cat sun flower water school",
-            test: "The touch typing system is an efficient method to operate the computer keyboard quickly and without errors without constantly looking at the keys."
+            test: "The quick brown fox jumps over the lazy dog. This is a test of your typing speed and accuracy without looking at the keyboard."
         };
         
         let targetText = "";
@@ -263,31 +183,56 @@
         let timerInterval = null;
         let isRunning = false;
         let streak = parseInt(localStorage.getItem('typing_streak') || '0');
-        document.getElementById('streak-num').innerText = streak;
+        
+        document.getElementById('streak-num').textContent = streak;
+
+        // Initialize input listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('hidden-input');
+            input.addEventListener('input', handleInput);
+            input.addEventListener('keydown', handleKeyDown);
+        });
 
         function switchMode(mode) {
             currentMode = mode;
+            
+            // Update buttons
             document.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.className = "mode-btn px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-700";
+                btn.classList.remove('bg-blue-600', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300', 'hover:bg-slate-700');
             });
-            event.target.className = "mode-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow";
+            event.target.classList.add('bg-blue-600', 'text-white', 'shadow');
+            event.target.classList.remove('text-slate-300', 'hover:bg-slate-700');
 
+            // Hide all sections
             document.getElementById('section-basics').classList.add('hidden');
             document.getElementById('section-typing').classList.add('hidden');
-            document.getElementById('section-bot').classList.add('hidden');
-            document.getElementById('section-duo').classList.add('hidden');
 
             if(mode === 'basics') {
                 document.getElementById('section-basics').classList.remove('hidden');
-            } else if(mode === 'bot') {
-                document.getElementById('section-bot').classList.remove('hidden');
-            } else if(mode === 'duo') {
-                document.getElementById('section-duo').classList.remove('hidden');
             } else {
                 document.getElementById('section-typing').classList.remove('hidden');
-                targetText = sampleTexts[mode];
+                targetText = sampleTexts[mode] || sampleTexts.practice;
                 resetSession();
             }
+        }
+
+        function focusInput() {
+            const input = document.getElementById('hidden-input');
+            input.focus();
+            document.getElementById('focus-overlay').style.display = 'none';
+            
+            if(!isRunning && !startTime) {
+                startTime = Date.now();
+                timerInterval = setInterval(updateTimer, 100);
+                isRunning = true;
+            }
+        }
+
+        function updateTimer() {
+            if(!startTime) return;
+            let elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('stat-time').textContent = elapsed + 's';
         }
 
         function resetSession() {
@@ -296,219 +241,130 @@
             currentIndex = 0;
             errors = 0;
             startTime = null;
-            document.getElementById('stat-wpm').innerText = '0';
-            document.getElementById('stat-acc').innerText = '100%';
-            document.getElementById('stat-err').innerText = '0';
-            document.getElementById('stat-time').innerText = '0s';
+            document.getElementById('stat-wpm').textContent = '0';
+            document.getElementById('stat-acc').textContent = '100%';
+            document.getElementById('stat-err').textContent = '0';
+            document.getElementById('stat-time').textContent = '0s';
             document.getElementById('focus-overlay').style.display = 'flex';
+            document.getElementById('hidden-input').value = '';
             renderText();
-        }
-
-        function focusInput() {
-            document.getElementById('hidden-input').focus();
-            document.getElementById('focus-overlay').style.display = 'none';
-            if(!isRunning && !startTime) {
-                startTime = new Date();
-                timerInterval = setInterval(updateTimer, 1000);
-                isRunning = true;
-            }
-        }
-
-        function updateTimer() {
-            if(!startTime) return;
-            let elapsed = Math.floor((new Date() - startTime) / 1000);
-            document.getElementById('stat-time').innerText = elapsed + 's';
         }
 
         function renderText() {
             const display = document.getElementById('text-display');
             let html = '';
-            for(let i=0; i<targetText.length; i++) {
+            
+            for(let i = 0; i < targetText.length; i++) {
+                let charClass = '';
                 if(i < currentIndex) {
-                    html += `<span class="text-slate-500">${targetText[i]}</span>`;
+                    charClass = 'correct';
                 } else if(i === currentIndex) {
-                    html += `<span class="bg-blue-500 text-white underline">${targetText[i]}</span>`;
-                } else {
-                    html += `<span>${targetText[i]}</span>`;
+                    charClass = 'bg-blue-500 text-white underline';
                 }
+                html += `<span class="${charClass}">${targetText[i]}</span>`;
             }
             display.innerHTML = html;
         }
 
         function handleInput(e) {
             if(!isRunning) focusInput();
-            const val = e.target.value;
-            e.target.value = '';
+            
+            const input = e.target;
+            const val = input.value;
+            
             if(!val) return;
-
-            const char = val[0];
-            if(char === targetText[currentIndex]) {
+            
+            const lastChar = val[val.length - 1];
+            input.value = '';
+            
+            if(lastChar === targetText[currentIndex]) {
                 playSound('success');
                 currentIndex++;
                 renderText();
                 highlightKey(targetText[currentIndex]);
                 
-                // Calculate stats
-                let elapsedMin = (new Date() - startTime) / 60000;
-                if(elapsedMin > 0) {
-                    let wpm = Math.round((currentIndex / 5) / elapsedMin);
-                    document.getElementById('stat-wpm').innerText = wpm;
+                // Calculate WPM
+                if(startTime) {
+                    let elapsedMin = (Date.now() - startTime) / 60000;
+                    if(elapsedMin > 0) {
+                        let wpm = Math.round((currentIndex / 5) / elapsedMin);
+                        document.getElementById('stat-wpm').textContent = wpm;
+                    }
                 }
                 
                 if(currentIndex >= targetText.length) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                    streak++;
-                    localStorage.setItem('typing_streak', streak);
-                    document.getElementById('streak-num').innerText = streak;
+                    completeTest();
                 }
             } else {
                 playSound('error');
                 errors++;
-                document.getElementById('stat-err').innerText = errors;
-                let acc = Math.max(0, Math.round(((currentIndex - errors) / currentIndex) * 100));
-                document.getElementById('stat-acc').innerText = acc + '%';
+                document.getElementById('stat-err').textContent = errors;
+                if(currentIndex > 0) {
+                    let acc = Math.round(((currentIndex - errors) / currentIndex) * 100);
+                    document.getElementById('stat-acc').textContent = Math.max(0, acc) + '%';
+                }
             }
         }
 
         function handleKeyDown(e) {
-            if(e.key === 'Escape') resetSession();
+            if(e.key === 'Escape') {
+                resetSession();
+            }
+        }
+
+        function completeTest() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            streak++;
+            localStorage.setItem('typing_streak', streak);
+            document.getElementById('streak-num').textContent = streak;
+            alert('🎉 Test completed! Great job!');
         }
 
         function highlightKey(char) {
             document.querySelectorAll('.key').forEach(k => k.classList.remove('key-active'));
             if(!char) return;
-            let target = Array.from(document.querySelectorAll('.key')).find(k => k.getAttribute('data-key') === char.toLowerCase());
+            
+            let target = Array.from(document.querySelectorAll('.key')).find(k => 
+                k.getAttribute('data-key').toLowerCase() === char.toLowerCase()
+            );
             if(target) target.classList.add('key-active');
         }
 
-        // Bot Race Logic
-        let botInterval = null;
-        let botProgress = 0;
-        let userBotProgress = 0;
-        let botTargetText = "Fast typing against the bot requires high concentration and nimble fingers for success.";
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                if(type === 'error') {
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.1);
+                } else {
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.05);
+                }
+            } catch(err) {
+                console.log('Audio not available');
+            }
+        }
 
         function startBotRace() {
-            document.getElementById('race-track').classList.remove('hidden');
-            botProgress = 0;
-            userBotProgress = 0;
-            document.getElementById('user-car').style.marginLeft = '0%';
-            document.getElementById('bot-car').style.marginLeft = '0%';
-            
-            let speedMap = { easy: 400, medium: 250, hard: 120 };
-            let level = document.getElementById('bot-level').value;
-            
-            clearInterval(botInterval);
-            botInterval = setInterval(() => {
-                botProgress += 1;
-                if(botProgress > 100) botProgress = 100;
-                document.getElementById('bot-car').style.marginLeft = botProgress + '%';
-                if(botProgress >= 100) clearInterval(botInterval);
-            }, speedMap[level]);
-
-            renderBotText();
-            document.getElementById('bot-hidden-input').focus();
+            alert('🤖 Bot Race - Coming Soon!');
         }
-
-        function renderBotText() {
-            const display = document.getElementById('race-typing-box');
-            let html = '';
-            for(let i=0; i<botTargetText.length; i++) {
-                if(i < userBotProgress) html += `<span class="text-slate-500">${botTargetText[i]}</span>`;
-                else if(i === userBotProgress) html += `<span class="bg-blue-500 text-white underline">${botTargetText[i]}</span>`;
-                else html += `<span>${botTargetText[i]}</span>`;
-            }
-            display.innerHTML = html;
-        }
-
-        function handleBotInput(e) {
-            const val = e.target.value;
-            e.target.value = '';
-            if(!val) return;
-            if(val[0] === botTargetText[userBotProgress]) {
-                playSound('success');
-                userBotProgress++;
-                renderBotText();
-                let pct = Math.round((userBotProgress / botTargetText.length) * 100);
-                document.getElementById('user-car').style.marginLeft = pct + '%';
-                if(userBotProgress >= botTargetText.length) {
-                    clearInterval(botInterval);
-                    confetti();
-                    alert('Race finished! You won against the bot!');
-                }
-            } else {
-                playSound('error');
-            }
-        }
-
-        // Duo Mode Logic
-        let duoP1Name = "Player 1", duoP2Name = "Player 2";
-        let duoCurrentPlayer = 1;
-        let duoText = "Together typing is much more fun and motivates you to achieve new personal bests.";
-        let duoP1Score = 0, duoP2Score = 0;
 
         function startDuoGame() {
-            duoP1Name = document.getElementById('p1-name').value || "Player 1";
-            duoP2Name = document.getElementById('p2-name').value || "Player 2";
-            document.getElementById('duo-setup').classList.add('hidden');
-            document.getElementById('duo-game-area').classList.remove('hidden');
-            duoCurrentPlayer = 1;
-            duoP1Score = 0;
-            duoP2Score = 0;
-            setupDuoRound();
-        }
-
-        function setupDuoRound() {
-            document.getElementById('duo-turn-indicator').innerText = `${duoCurrentPlayer === 1 ? duoP1Name : duoP2Name}'s Turn!`;
-            duoIndex = 0;
-            renderDuoText();
-            document.getElementById('duo-hidden-input').focus();
-        }
-
-        let duoIndex = 0;
-        let duoStartTime = null;
-
-        function renderDuoText() {
-            const display = document.getElementById('duo-typing-display');
-            let html = '';
-            for(let i=0; i<duoText.length; i++) {
-                if(i < duoIndex) html += `<span class="text-slate-500">${duoText[i]}</span>`;
-                else if(i === duoIndex) html += `<span class="bg-indigo-500 text-white underline">${duoText[i]}</span>`;
-                else html += `<span>${duoText[i]}</span>`;
-            }
-            display.innerHTML = html;
-        }
-
-        function handleDuoInput(e) {
-            if(!duoStartTime) duoStartTime = new Date();
-            const val = e.target.value;
-            e.target.value = '';
-            if(!val) return;
-            if(val[0] === duoText[duoIndex]) {
-                playSound('success');
-                duoIndex++;
-                renderDuoText();
-                if(duoIndex >= duoText.length) {
-                    let timeSec = (new Date() - duoStartTime) / 1000;
-                    duoStartTime = null;
-                    if(duoCurrentPlayer === 1) {
-                        duoP1Score = timeSec;
-                        alert(`${duoP1Name} finished in ${timeSec.toFixed(1)} seconds! Now it's ${duoP2Name}'s turn.`);
-                        duoCurrentPlayer = 2;
-                        setupDuoRound();
-                    } else {
-                        duoP2Score = timeSec;
-                        let winner = duoP1Score < duoP2Score ? duoP1Name : duoP2Name;
-                        confetti();
-                        alert(`Duel finished!\n${duoP1Name}: ${duoP1Score.toFixed(1)}s\n${duoP2Name}: ${duoP2Score.toFixed(1)}s\n\n🏆 Winner: ${winner}!`);
-                        document.getElementById('duo-setup').classList.remove('hidden');
-                        document.getElementById('duo-game-area').classList.add('hidden');
-                    }
-                }
-            } else {
-                playSound('error');
-            }
+            alert('👥 Duo Mode - Coming Soon!');
         }
     </script>
 </body>
